@@ -15,6 +15,6 @@ class EncountersViewSet(viewsets.ModelViewSet):
     queryset = models.Encounter.objects.all()
     serializer_class = models.EncounterSerializer
 
-class EncounterFoesViewSet(viewsets.ModelViewSet):
-    queryset = models.EncounterFoe.objects.all()
-    serializer_class = models.EncounterFoeSerializer
+class FoeEncountersViewSet(viewsets.ModelViewSet):
+    queryset = models.FoeEncounters.objects.all()
+    serializer_class = models.FoeEncountersSerializer

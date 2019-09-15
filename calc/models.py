@@ -25,8 +25,21 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
         model = Player
         fields = ['url','name','level']
 
+class FoeEncounters(models.Model):
+    foe = models.ForeignKey(Foe, on_delete=models.CASCADE)
+    count = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.foe.name + " " + str(self.count)
+
+class FoeEncountersSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = FoeEncounters
+        fields = ['url', 'foe', 'count']
+
 class Encounter(models.Model):
     name = models.CharField(max_length=50)
+    foes = models.ManyToManyField(FoeEncounters)
 
     def __str__(self):
         return self.name
@@ -34,17 +47,4 @@ class Encounter(models.Model):
 class EncounterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Encounter
-        fields = ['url','name']
-
-class EncounterFoe(models.Model):
-    encounter = models.ForeignKey(Encounter, on_delete=models.CASCADE)
-    foe = models.ForeignKey(Foe, on_delete=models.CASCADE)
-    count = models.IntegerField(default=1)
-
-    def __str__(self):
-        return self.foe 
-
-class EncounterFoeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = EncounterFoe
-        fields = ['url','encounter','foe', 'count']
+        fields = ['url', 'name', 'foes']

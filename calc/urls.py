@@ -6,7 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'foes', views.FoesViewSet)
 router.register(r'players', views.PlayersViewSet)
 router.register(r'encounters', views.EncountersViewSet)
-router.register(r'encounterfoes', views.EncounterFoesViewSet)
+router.register(r'foe-encounters', views.FoeEncountersViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
