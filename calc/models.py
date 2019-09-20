@@ -25,6 +25,18 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
         model = Player
         fields = ['url','name','level']
 
+class Party(models.Model):
+    name = models.CharField(max_length=50)
+    member = models.ManyToManyField(Player)
+
+    def __str__(self):
+        return self.name
+
+class PartySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+            model = Party
+            fields = ['name','member']
+
 class FoeEncounters(models.Model):
     foe = models.ForeignKey(Foe, on_delete=models.CASCADE)
     count = models.IntegerField(default=1)
