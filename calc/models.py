@@ -52,6 +52,7 @@ class FoeEncountersSerializer(serializers.HyperlinkedModelSerializer):
 class Encounter(models.Model):
     name = models.CharField(max_length=50)
     foes = models.ManyToManyField(FoeEncounters)
+    challenge = ''
 
     def __str__(self):
         return self.name
@@ -59,4 +60,4 @@ class Encounter(models.Model):
 class EncounterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Encounter
-        fields = ['url', 'name', 'foes']
+        fields = ['url', 'name', 'foes', 'challenge']
