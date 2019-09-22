@@ -6,6 +6,10 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import action
 from . import models
 
+from challenge.calc import XPThresholdCalc
+from challenge.calc import EncounterXPCalc
+from challenge.calc import EncounterDifficultyCalc
+
 # Create your views here.
 class FoesViewSet(viewsets.ModelViewSet):
     queryset = models.Foe.objects.all()
@@ -45,8 +49,15 @@ class PartiesViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def encounters(self, request, *args, **kwargs):
+        calc_party = XPThresholdCalc()
+        calc_encounter = EncounterXPCalc()
+        calc_difficulty = EncounterDifficultyCalc(calc_encounter, calc_party)
+
         party = self.get_object()
         party_serializer = self.get_serializer(party)
+
+        for player in party.member:
+            calc_party.add_party_level(player.level)
 
         encounter = models.Encounter.objects.all()
         encounter_serializer = models.EncounterSerializer(encounter, many=True, context={'request': request})
