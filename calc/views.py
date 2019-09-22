@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.decorators import action
@@ -26,7 +27,6 @@ class PartiesViewSet(viewsets.ModelViewSet):
     queryset = models.Party.objects.all()
     serializer_class = models.PartySerializer
 
-    @action(detail=True, methods=['get'])
     def encounter(self, request, *args, **kwargs):
         party = self.get_object()
         party_serializer = self.get_serializer(party)
@@ -37,6 +37,22 @@ class PartiesViewSet(viewsets.ModelViewSet):
 
         encounters = []
         encounters.append(encounter_serializer.data)
+
+        response = party_serializer.data
+        response["encounters"] = encounters
+
+        return Response({"party": response})
+
+    @action(detail=True, methods=['get'])
+    def encounters(self, request, *args, **kwargs):
+        party = self.get_object()
+        party_serializer = self.get_serializer(party)
+
+        encounter = models.Encounter.objects.all()
+        encounter_serializer = models.EncounterSerializer(encounter, many=True, context={'request': request})
+
+        encounters = []
+        encounters.extend(encounter_serializer.data)
 
         response = party_serializer.data
         response["encounters"] = encounters
