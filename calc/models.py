@@ -35,7 +35,7 @@ class Party(models.Model):
 class PartySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
             model = Party
-            fields = ['name','member']
+            fields = ['url','name','member']
 
 class FoeEncounters(models.Model):
     foe = models.ForeignKey(Foe, on_delete=models.CASCADE)
