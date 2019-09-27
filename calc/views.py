@@ -58,8 +58,8 @@ class PartiesViewSet(viewsets.ModelViewSet):
         party = self.get_object()
         party_serializer = self.get_serializer(party)
 
-        for player in party.member.all():
-            calc_party.add_party_level(player.level)
+        for member in party.member.all():
+            calc_party.add_party_level(member.level)
 
         encounters = models.Encounter.objects.all()
         for encounter in encounters:
