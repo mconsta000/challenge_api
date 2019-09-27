@@ -1,3 +1,7 @@
+from challenge.calc import XPThresholdCalc
+from challenge.calc import EncounterXPCalc
+from challenge.calc import EncounterDifficultyCalc
+
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import status
@@ -6,9 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import action
 from . import models
 
-from challenge.calc import XPThresholdCalc
-from challenge.calc import EncounterXPCalc
-from challenge.calc import EncounterDifficultyCalc
+
 
 # Create your views here.
 class FoesViewSet(viewsets.ModelViewSet):
@@ -56,16 +58,23 @@ class PartiesViewSet(viewsets.ModelViewSet):
         party = self.get_object()
         party_serializer = self.get_serializer(party)
 
-        for player in party.member:
+        for player in party.member.all():
             calc_party.add_party_level(player.level)
 
-        encounter = models.Encounter.objects.all()
-        encounter_serializer = models.EncounterSerializer(encounter, many=True, context={'request': request})
+        encounters = models.Encounter.objects.all()
+        for encounter in encounters:
+            for f in encounter.foes.all():
+                calc_encounter.add_encounter_xp(f.foe.xp * f.count)
+            
+            encounter.challenge = calc_difficulty.calculate_difficulty()
+            calc_encounter.reset()
+            
+        encounter_serializer = models.EncounterSerializer(encounters, many=True, context={'request': request})
 
-        encounters = []
-        encounters.extend(encounter_serializer.data)
+        encounters_serialized = []
+        encounters_serialized.extend(encounter_serializer.data)
 
         response = party_serializer.data
-        response["encounters"] = encounters
+        response["encounters"] = encounters_serialized
 
         return Response({"party": response})
