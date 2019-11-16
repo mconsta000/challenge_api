@@ -10,8 +10,6 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import action
 from . import models
 
-
-
 # Create your views here.
 class FoesViewSet(viewsets.ModelViewSet):
     queryset = models.Foe.objects.all()
@@ -58,8 +56,8 @@ class PartiesViewSet(viewsets.ModelViewSet):
         party = self.get_object()
         party_serializer = self.get_serializer(party)
 
-        for member in party.member.all():
-            calc_party.add_party_level(member.level)
+        for player in party.player.all():
+            calc_party.add_party_level(player.level)
 
         encounters = models.Encounter.objects.all()
         for encounter in encounters:
