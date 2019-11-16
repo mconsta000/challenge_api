@@ -4,7 +4,7 @@ Uses Django Rest Framework to expose a model used as input into the challenge_ca
 
 ## Dependencies
 
-[challenge_calc](../challenge_calc) must be on the PYTHONPATH for this project to execute
+[challenge_calc](/mconsta000/challenge_calc) must be on the PYTHONPATH for this project to execute
 
 ## How to run
 
