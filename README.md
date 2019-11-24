@@ -6,6 +6,9 @@ Uses Django Rest Framework to expose a model used as input into the challenge_ca
 
 [challenge_calc](https://github.com/mconsta000/challenge_calc) must be on the PYTHONPATH for this project to execute
 
+pip install django
+pip install djangorestframework
+
 ## How to run
 
 python manage.py runserver
