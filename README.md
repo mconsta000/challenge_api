@@ -11,4 +11,6 @@ pip install djangorestframework
 
 ## How to run
 
-python manage.py runserver
+`python manage.py runserver`
+
+Access the API at http://localhost:8000/calc/
